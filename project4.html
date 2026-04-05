@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>藍 · Проект 4</title>
+    <style>
+        /* ===== ПОДКЛЮЧЕНИЕ СВОИХ ШРИФТОВ ===== */
+        @font-face {
+            font-family: 'Stalinist One';
+            src: url('fonts/StalinistOne-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AA Stetica';
+            src: url('fonts/AA-STETICA-REGULAR.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AA Stetica';
+            src: url('fonts/AA-STETICA-MEDIUM-ITALIC.otf') format('opentype');
+            font-weight: 500;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        /* ===== БАЗОВЫЕ СТИЛИ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'AA Stetica', 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background-color: #0a121c;
+            color: #e0f0ff;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ===== ФОНОВЫЕ ИЗОБРАЖЕНИЯ ===== */
+        .bg-image-left {
+            position: fixed;
+            left: 10px;
+            top: 100px;
+            width: auto;
+            height: auto;
+            pointer-events: none;
+            z-index: 0;
+            max-width: 500px;
+            max-height: 500px;
+        }
+
+        .bg-image-left img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            object-position: left top;
+            opacity: 0.2;
+        }
+
+        .bg-image-right {
+            position: fixed;
+            right: -400px;
+            bottom: -10px;
+            width: auto;
+            height: auto;
+            pointer-events: none;
+            z-index: 0;
+            max-width: 1200px;
+            max-height: 1200px;
+        }
+
+        .bg-image-right img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            object-position: right bottom;
+            opacity: 0.2;
+        }
+
+        /* Контейнер для контента, чтобы он был поверх фона */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        /* ===== АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ (КАК НА ГЛАВНОЙ) ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Задержки для последовательного появления */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        .delay-6 { transition-delay: 0.6s; }
+        .delay-7 { transition-delay: 0.7s; }
+        .delay-8 { transition-delay: 0.8s; }
+
+        /* ===== НАВИГАЦИЯ С ТРЕМЯ СОСТОЯНИЯМИ ===== */
+        .nav-wrapper {
+            background: #0e1a2a;
+            border-bottom: 3px solid #2a5a8a;
+            box-shadow: 0 5px 15px rgba(20, 60, 100, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            font-size: 2.2rem;
+            text-decoration: none;
+            color: #b0d0ff;
+            transition: all 0.3s;
+            filter: drop-shadow(0 0 5px #3a7ab0);
+            line-height: 1;
+            display: block;
+            font-family: 'AA Stetica', sans-serif;
+        }
+
+        .logo a:hover {
+            color: #8fcbff;
+            transform: rotate(90deg) scale(1.1);
+            filter: drop-shadow(0 0 15px #5ab0ff);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            font-family: 'AA Stetica', sans-serif;
+            color: #b0d0ff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            background: transparent;
+        }
+
+        .nav-menu a:hover {
+            background-color: #1a324a;
+            color: #ffffff;
+            border-color: #5ab0ff;
+            box-shadow: 0 0 20px #4a9cf0;
+        }
+
+        .nav-menu a:active {
+            background-color: #082567;
+            color: #ffffff;
+            border-color: #4a9cf0;
+            box-shadow: 0 0 20px #00008B;
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.8rem;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* ===== ЗАГОЛОВКИ СО ШРИФТОМ STALINIST ONE ===== */
+        h1, h2, h3 {
+            font-family: 'Stalinist One', 'Impact', 'Arial Black', sans-serif;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #9fc5ff;
+            text-shadow: 2px 2px 0 #1a2a3a;
+        }
+
+        h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 2.2rem;
+            margin: 2rem 0 1.5rem 0;
+            border-left: 8px solid #2a5a8a;
+            padding-left: 1.2rem;
+        }
+
+        h1::before {
+            content: "✧";
+            font-size: 1.8rem;
+            color: #5a9acf;
+            filter: drop-shadow(0 0 5px #3a7ab0);
+            line-height: 1;
+        }
+
+        h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.8rem;
+            margin: 2rem 0 1.5rem 0;
+            border-left: 5px solid #2a5a8a;
+            padding-left: 1.2rem;
+            color: #9fc5ff;
+        }
+
+        h2::before {
+            content: "✧";
+            font-size: 1.5rem;
+            color: #5a9acf;
+            filter: drop-shadow(0 0 5px #3a7ab0);
+            line-height: 1;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem 0;
+            color: #8fc5ff;
+        }
+
+        /* ===== СТРАНИЦА ПРОЕКТА ===== */
+        .project-header {
+            margin-bottom: 2rem;
+        }
+
+        .project-title {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            color: #9fc5ff;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            font-family: 'AA Stetica', sans-serif;
+            color: #b0d4ff;
+        }
+
+        .project-year {
+            background: #1a3a5a;
+            padding: 0.3rem 1rem;
+            border-radius: 20px 2px 20px 2px;
+            color: #c0e0ff;
+            font-size: 0.9rem;
+        }
+
+        /* ===== БОЛЬШОЕ ИЗОБРАЖЕНИЕ ===== */
+        .project-image-large {
+            width: 100%;
+            height: 700px;
+            background-color: #0e1a2a;
+            border: 2px solid #2a5a8a;
+            border-radius: 20px 4px 20px 4px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 25px rgba(20, 40, 70, 0.5);
+            transition: all 0.3s;
+        }
+
+        .project-image-large:hover {
+            border-color: #5ab0ff;
+            box-shadow: 0 15px 35px #1a3a5a, 0 0 20px #4a9cf0;
+        }
+
+        .project-image-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-image-large:hover img {
+            transform: scale(1.02);
+        }
+
+        /* ===== ОПИСАНИЕ ПРОЕКТА ===== */
+        .project-description {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .project-description {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .description-text {
+            background: #0e1a2a;
+            border: 1px solid #2a5a8a;
+            border-radius: 30px 4px 30px 4px;
+            padding: 2rem;
+        }
+
+        .description-text p {
+            font-family: 'AA Stetica', sans-serif;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #b0d4ff;
+        }
+
+        .description-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ===== БЛОК С ПРОГРАММОЙ ===== */
+        .software-section {
+            background: #0e1a2a;
+            border: 1px solid #2a5a8a;
+            border-radius: 30px 4px 30px 4px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .software-title {
+            font-family: 'Stalinist One', sans-serif;
+            font-size: 1.2rem;
+            color: #8fc5ff;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+            border-bottom: 1px dashed #2a5a8a;
+            padding-bottom: 0.8rem;
+        }
+
+        .software-logo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .software-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 2px #0a1a2a);
+            transition: all 0.3s;
+        }
+
+        .software-logo:hover img {
+            transform: scale(1.1);
+            filter: drop-shadow(0 4px 5px #4a9cf0);
+        }
+
+        .software-name {
+            font-family: 'Stalinist One', sans-serif;
+            font-size: 1.5rem;
+            color: #9fc5ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .software-version {
+            font-family: 'AA Stetica', sans-serif;
+            color: #b0d4ff;
+            font-size: 1rem;
+        }
+
+        /* ===== ДОПОЛНИТЕЛЬНЫЕ ИЗОБРАЖЕНИЯ ===== */
+        .additional-images {
+            margin: 4rem 0;
+        }
+
+        .additional-title {
+            font-family: 'Stalinist One', sans-serif;
+            font-size: 1.8rem;
+            color: #9fc5ff;
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+            border-left: 5px solid #2a5a8a;
+            padding-left: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 #1a2a3a;
+        }
+
+        .additional-title::before {
+            content: "✧";
+            font-size: 1.5rem;
+            color: #5a9acf;
+            filter: drop-shadow(0 0 5px #3a7ab0);
+            line-height: 1;
+        }
+
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .images-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .images-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .additional-image {
+            height: 200px;
+            background-color: #0e1a2a;
+            border: 1px solid #2a5a8a;
+            border-radius: 10px 2px 10px 2px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .additional-image:hover {
+            border-color: #5ab0ff;
+            box-shadow: 0 0 15px #4a9cf0;
+            transform: translateY(-5px);
+        }
+
+        .additional-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .additional-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* ===== МОДАЛЬНОЕ ОКНО ДЛЯ ИЗОБРАЖЕНИЙ ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border: 3px solid #2a5a8a;
+            border-radius: 10px 2px 10px 2px;
+            box-shadow: 0 0 30px #4a9cf0;
+            animation: zoom 0.3s ease;
+        }
+
+        @keyframes zoom {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 50px;
+            color: #b0d0ff;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 1001;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: #5ab0ff;
+            transform: scale(1.1);
+            text-shadow: 0 0 15px #4a9cf0;
+        }
+
+        .modal-caption {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #b0d4ff;
+            font-family: 'AA Stetica', sans-serif;
+            font-size: 1.2rem;
+            padding: 1rem;
+            background: linear-gradient(transparent, rgba(10, 18, 28, 0.8));
+            pointer-events: none;
+        }
+
+        /* ===== НАВИГАЦИЯ МЕЖДУ ПРОЕКТАМИ ===== */
+        .project-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 2px solid #2a6a9a;
+            color: #b0d4ff;
+            text-decoration: none;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            font-family: 'AA Stetica', sans-serif;
+            cursor: pointer;
+            min-width: 160px;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background-color: #1a324a;
+            color: #ffffff;
+            border-color: #5ab0ff;
+            box-shadow: 0 0 20px #4a9cf0;
+            transform: translateY(-3px);
+        }
+
+        .nav-btn:active {
+            background-color: #082567;
+            color: #ffffff;
+            border-color: #4a9cf0;
+            box-shadow: 0 0 20px #00008B;
+            transform: translateY(0);
+        }
+
+        .nav-btn.prev {
+            margin-right: auto;
+        }
+
+        .nav-btn.next {
+            margin-left: auto;
+        }
+
+        .nav-btn.center {
+            margin: 0 auto;
+        }
+
+        /* Для мобильных устройств */
+        @media (max-width: 768px) {
+            .project-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                margin: 0 !important;
+            }
+            
+            .close-modal {
+                top: 20px;
+                right: 30px;
+                font-size: 40px;
+            }
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        footer {
+            background: #0a1220;
+            border-top: 2px solid #2a5a8a;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 4rem;
+            color: #8fb0d0;
+            font-family: 'AA Stetica', sans-serif;
+        }
+
+        hr {
+            border: 1px dashed #2a5a8a;
+            margin: 2rem 0;
+        }
+
+        .author-signature {
+            margin: 3rem 0 0 0;
+            text-align: right;
+            font-size: 1rem;
+            opacity: 0.7;
+            border-top: 1px solid #2a5a8a;
+            padding-top: 1rem;
+            font-style: italic;
+            font-family: 'AA Stetica', sans-serif;
+        }
+
+        .author-signature span {
+            font-family: 'AA Stetica', serif;
+            background: #0e1a2a;
+            padding: 0.3rem 1rem;
+            border-radius: 30px 0 30px 0;
+            transition: all 0.2s;
+        }
+
+        /* Placeholder для изображений */
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0e1a2a;
+            color: #7fa0c0;
+            font-size: 0.9rem;
+            font-family: 'AA Stetica', sans-serif;
+        }
+
+        .logo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0e1a2a;
+            color: #7fa0c0;
+            font-size: 0.9rem;
+            border-radius: 15px;
+            font-family: 'AA Stetica', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .logo-placeholder:hover {
+            background: #1a324a;
+            color: #c0e0ff;
+            box-shadow: 0 0 10px #4a9cf0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновое изображение слева -->
+    <div class="bg-image-left">
+        <img src="img/фоновая1.png" alt="Background Left">
+    </div>
+
+    <!-- Фоновое изображение справа -->
+    <div class="bg-image-right">
+        <img src="img/фоновая2.png" alt="Background Right">
+    </div>
+
+    <!-- Обертка для контента поверх фона -->
+    <div class="content-wrapper">
+        <div class="nav-wrapper">
+            <nav>
+                <div class="logo">
+                    <a href="index.html" title="На главную">✧</a>
+                </div>
+                <div class="nav-menu">
+                    <a href="index.html">Главная</a>
+                    <a href="projects.html">Проекты</a>
+                    <a href="contacts.html">Контакты</a>
+                </div>
+            </nav>
+        </div>
+
+        <main class="container">
+            <!-- Заголовок проекта -->
+            <h1 class="fade-in visible">藍 · «Катана в стиле Киберпанк»</h1>
+            
+            <!-- Мета-информация -->
+            <div class="project-meta fade-in delay-1">
+                <span class="project-year">3D</span>
+                <span class="project-year">Оружие</span>
+                <span class="project-year">2025</span>
+            </div>
+
+            <!-- Большое изображение проекта -->
+            <div class="project-image-large fade-in delay-2">
+                <img src="img/катана1.png" alt="Катана в стиле Киберпанк">
+            </div>
+
+            <!-- Описание проекта и информация о программе -->
+            <div class="project-description fade-in delay-3">
+                <!-- Блок с описанием -->
+                <div class="description-text">
+                    <h3>ОПИСАНИЕ</h3>
+                    <p>«Катана в стиле Киберпанк» — это эксперимент по смешению традиционного японского оружейного искусства с эстетикой неонового будущего. Задача проекта заключалась в создании модели, которая сохраняет дух и изящество классической катаны, но при этом переосмысливает ее через призму киберпанка — неоновые акценты, голографические вставки, футуристические материалы и светодиодную подсветку.</p>
+                    <p>Работа над моделью началась с изучения анатомии настоящей катаны — пропорции, изгиб клинка, конструкция рукояти и гарды. На основе этих знаний была построена базовая геометрия, в которую затем интегрировались футуристические элементы: неоновые каналы на клинке, голографические вставки на цубе (гарде), светодиодные индикаторы на рукояти и такелаже.</p>
+                    <p>Рукоять обмотана такелажем с вплетенными оптоволоконными нитями. Гарда выполнена из затемненного титана с футуристической гравировкой и светодиодной подсветкой по контуру. Проект демонстрирует навыки хард-серфейс моделирования</p>
+                </div>
+
+                <!-- Блок с программой (Blender 3D) -->
+                <div class="software-section">
+                    <h3 class="software-title">ИСПОЛЬЗОВАННАЯ ПРОГРАММА</h3>
+                    <div class="software-logo">
+                        <img src="img/blender.png" alt="Blender">
+                    </div>
+                    <div class="software-name">Blender 3D</div>
+                    <div class="software-version">версия 5.0</div>
+                </div>
+            </div>
+
+            <!-- Дополнительные изображения -->
+            <div class="additional-images fade-in delay-4">
+                <h2 class="additional-title">藍 · Дополнительные изображения</h2>
+                <div class="images-grid">
+                    <div class="additional-image" onclick="openModal('img/катана2.png')">
+                        <img src="img/катана2.png" alt="Дополнительное изображение 1">
+                    </div>
+                    <div class="additional-image" onclick="openModal('img/катана3.png')">
+                        <img src="img/катана3.png" alt="Дополнительное изображение 2">
+                    </div>
+                    <div class="additional-image" onclick="openModal('img/катана4.png')">
+                        <img src="img/катана4.png" alt="Дополнительное изображение 3">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Навигация между проектами -->
+            <div class="project-navigation fade-in delay-5">
+                <a href="project3.html" class="nav-btn prev">← К предыдущему</a>
+                <a href="projects.html" class="nav-btn center">Вернуться к проектам</a>
+                <a href="project5.html" class="nav-btn next">К следующему →</a>
+            </div>
+
+            <div class="author-signature fade-in delay-6">
+                <span>Модные дизайнеры – диктаторы вкуса. Карл Лагерфельд</span>
+            </div>
+        </main>
+
+        <footer class="fade-in delay-7">
+             2026 · Mikhail Zlobin
+            <div style="margin-top: 0.5rem; font-size: 0.8rem;">workwithhio@mail.ru | @hio_mz</div>
+        </footer>
+    </div>
+
+    <!-- Модальное окно для изображений -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div class="modal-caption" id="modalCaption"></div>
+    </div>
+
+    <script>
+        // Анимация появления при скролле (точно как на главной)
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            function checkVisibility() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementBottom = element.getBoundingClientRect().bottom;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 50 && elementBottom > 0) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+            
+            setTimeout(checkVisibility, 100);
+            window.addEventListener('scroll', checkVisibility);
+        });
+
+        // Функции для модального окна
+        function openModal(imageSrc, caption) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const modalCaption = document.getElementById('modalCaption');
+            
+            modalImg.src = imageSrc;
+            modalCaption.textContent = caption;
+            modal.classList.add('show');
+            
+            // Блокируем скролл страницы
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('show');
+            
+            // Разблокируем скролл страницы
+            document.body.style.overflow = 'auto';
+        }
+
+        // Закрытие по клику вне изображения
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Закрытие по нажатию ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

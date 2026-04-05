@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>藍 · Контакты</title>
+    <style>
+        /* ===== ПОДКЛЮЧЕНИЕ СВОИХ ШРИФТОВ ===== */
+        @font-face {
+            font-family: 'Stalinist One';
+            src: url('fonts/StalinistOne-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AA Stetica';
+            src: url('fonts/AA-STETICA-REGULAR.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AA Stetica';
+            src: url('fonts/AA-STETICA-MEDIUM-ITALIC.otf') format('opentype');
+            font-weight: 500;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        /* ===== БАЗОВЫЕ СТИЛИ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'AA Stetica', 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background-color: #0a121c;
+            color: #e0f0ff;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ===== ФОНОВЫЕ ИЗОБРАЖЕНИЯ ===== */
+        .bg-image-left {
+            position: fixed;
+            left: 10px;
+            top: 100px;
+            width: auto;
+            height: auto;
+            pointer-events: none;
+            z-index: 0;
+            max-width: 500px;
+            max-height: 500px;
+        }
+
+        .bg-image-left img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            object-position: left top;
+            opacity: 0.2;
+        }
+
+        .bg-image-right {
+            position: fixed;
+            right: -400px;
+            bottom: -10px;
+            width: auto;
+            height: auto;
+            pointer-events: none;
+            z-index: 0;
+            max-width: 1200px;
+            max-height: 1200px;
+        }
+
+        .bg-image-right img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            object-position: right bottom;
+            opacity: 0.2;
+        }
+
+        /* Контейнер для контента, чтобы он был поверх фона */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        /* ===== АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ (КАК НА ГЛАВНОЙ) ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Задержки для последовательного появления */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        .delay-6 { transition-delay: 0.6s; }
+
+        /* ===== НАВИГАЦИЯ С ТРЕМЯ СОСТОЯНИЯМИ ===== */
+        .nav-wrapper {
+            background: #0e1a2a;
+            border-bottom: 3px solid #2a5a8a;
+            box-shadow: 0 5px 15px rgba(20, 60, 100, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            font-size: 2.2rem;
+            text-decoration: none;
+            color: #b0d0ff;
+            transition: all 0.3s;
+            filter: drop-shadow(0 0 5px #3a7ab0);
+            line-height: 1;
+            display: block;
+            font-family: 'AA Stetica', sans-serif;
+        }
+
+        .logo a:hover {
+            color: #8fcbff;
+            transform: rotate(90deg) scale(1.1);
+            filter: drop-shadow(0 0 15px #5ab0ff);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            font-family: 'AA Stetica', sans-serif;
+            color: #b0d0ff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            background: transparent;
+        }
+
+        .nav-menu a:hover {
+            background-color: #1a324a;
+            color: #ffffff;
+            border-color: #5ab0ff;
+            box-shadow: 0 0 20px #4a9cf0;
+        }
+
+        .nav-menu a:active {
+            background-color: #082567;
+            color: #ffffff;
+            border-color: #4a9cf0;
+            box-shadow: 0 0 20px #00008B;
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.8rem;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* ===== ЗАГОЛОВКИ СО ШРИФТОМ STALINIST ONE ===== */
+        h1, h2, h3 {
+            font-family: 'Stalinist One', 'Impact', 'Arial Black', sans-serif;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #9fc5ff;
+            text-shadow: 2px 2px 0 #1a2a3a;
+        }
+
+        h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 2.2rem;
+            margin: 2rem 0 2.5rem 0;
+            border-left: 8px solid #2a5a8a;
+            padding-left: 1.2rem;
+        }
+
+        h1::before {
+            content: "✧";
+            font-size: 1.8rem;
+            color: #5a9acf;
+            filter: drop-shadow(0 0 5px #3a7ab0);
+            line-height: 1;
+        }
+
+        /* ===== КОНТАКТЫ С ИЗОБРАЖЕНИЯМИ ===== */
+        .contacts-block {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            margin: 3rem 0;
+            justify-content: center;
+        }
+
+        .contact-item {
+            flex: 1 1 300px;
+            background: #0e1a2a;
+            border: 1px solid #2a5a8a;
+            padding: 3rem 2rem;
+            border-radius: 40px 4px 40px 4px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: inset 0 0 0 1px #1a3a5a, 0 10px 0 #0a1a2a;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-8px);
+            background: #1a2e42;
+            border-color: #5ab0ff;
+            box-shadow: inset 0 0 0 1px #1a3a5a, 0 15px 0 #0a1a2a, 0 0 20px #4a9cf0;
+        }
+
+        /* Стили для изображений логотипов */
+        .contact-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .contact-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 2px #0a1a2a);
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover .contact-logo img {
+            transform: scale(1.1);
+            filter: drop-shadow(0 4px 5px #4a9cf0);
+        }
+
+        .contact-item h3 {
+            color: #8fc5ff;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        /* Ссылки в контактах */
+        .contact-item a {
+            color: #7fb0e0;
+            text-decoration: none;
+            font-size: 1.5rem;
+            word-break: break-all;
+            border-bottom: 1px dashed #7fb0e0;
+            padding-bottom: 3px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-family: 'AA Stetica', sans-serif;
+            font-weight: 500;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .contact-item a:hover {
+            color: #b0e0ff;
+            border-bottom: 1px solid #b0e0ff;
+        }
+
+        .contact-item a:active {
+            color: #00008B;
+            border-bottom: 1px solid #00008B;
+        }
+
+        .contact-note {
+            color: #b0d4ff;
+            font-size: 1rem;
+            margin-top: 1rem;
+            font-style: italic;
+            font-family: 'AA Stetica', sans-serif;
+        }
+
+        .jpn-tag {
+            display: inline-block;
+            background: #1a3a5a;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.9rem;
+            border-radius: 20px 2px 20px 2px;
+            color: #c0e0ff;
+            margin: 0 0.2rem;
+            font-family: 'AA Stetica', sans-serif;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .jpn-tag:hover {
+            background: #2a6a9a;
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px #4a9cf0;
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        footer {
+            background: #0a1220;
+            border-top: 2px solid #2a5a8a;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 4rem;
+            color: #8fb0d0;
+            font-family: 'AA Stetica', sans-serif;
+        }
+
+        .author-signature {
+            margin: 3rem 0 0 0;
+            text-align: right;
+            font-size: 1rem;
+            opacity: 0.7;
+            border-top: 1px solid #2a5a8a;
+            padding-top: 1rem;
+            font-style: italic;
+            font-family: 'AA Stetica', sans-serif;
+        }
+
+        .author-signature span {
+            font-family: 'AA Stetica', serif;
+            background: #0e1a2a;
+            padding: 0.3rem 1rem;
+            border-radius: 30px 0 30px 0;
+            transition: all 0.2s;
+        }
+
+        hr {
+            border: 1px dashed #2a5a8a;
+            margin: 2rem 0;
+        }
+
+        /* Placeholder для изображений */
+        .logo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0e1a2a;
+            color: #7fa0c0;
+            font-size: 0.9rem;
+            border-radius: 15px;
+            font-family: 'AA Stetica', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .logo-placeholder:hover {
+            background: #1a324a;
+            color: #c0e0ff;
+            box-shadow: 0 0 10px #4a9cf0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновое изображение слева -->
+    <div class="bg-image-left">
+        <img src="img/фоновая1.png" alt="Background Left">
+    </div>
+
+    <!-- Фоновое изображение справа -->
+    <div class="bg-image-right">
+        <img src="img/фоновая2.png" alt="Background Right">
+    </div>
+
+    <!-- Обертка для контента поверх фона -->
+    <div class="content-wrapper">
+        <div class="nav-wrapper">
+            <nav>
+                <div class="logo">
+                    <a href="index.html" title="На главную">✧</a>
+                </div>
+                <div class="nav-menu">
+                    <a href="index.html">Главная</a>
+                    <a href="projects.html">Проекты</a>
+                    <a href="contacts.html">Контакты</a>
+                </div>
+            </nav>
+        </div>
+
+        <main class="container">
+            <h1 class="fade-in visible">連絡 · контакты</h1>
+            
+            <div class="contacts-block">
+                <!-- Telegram с изображением -->
+                <div class="contact-item fade-in delay-1">
+                    <div class="contact-logo">
+                        <img src="img/telegram.png" alt="Telegram">
+                    </div>
+                    <h3>Telegram</h3>
+                    <a href="https://t.me/hio_mz" target="_blank">@hio_mz</a>
+                    <div class="contact-note">
+                        <span class="jpn-tag">迅速</span> отвечаю в течение дня
+                    </div>
+                </div>
+                
+                <!-- Mail.ru с изображением -->
+                <div class="contact-item fade-in delay-2">
+                    <div class="contact-logo">
+                        <img src="img/mail.png" alt="Mail">
+                    </div>
+                    <h3>Mail.ru</h3>
+                    <a href="https://mail.ru/">workwithhio@mail.ru</a>
+                    <div class="contact-note">
+                        <span class="jpn-tag">大容量</span> для предложений
+                    </div>
+                </div>
+            </div>
+
+            <div class="author-signature fade-in delay-3">
+                <span>Модные дизайнеры – диктаторы вкуса. Карл Лагерфельд</span>
+            </div>
+        </main>
+
+        <footer class="fade-in delay-4">
+             2026 · Mikhail Zlobin
+            <div style="margin-top: 0.5rem; font-size: 0.8rem;">workwithhio@mail.ru | @hio_mz</div>
+        </footer>
+    </div>
+
+    <script>
+        // Анимация появления при скролле (точно как на главной)
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            function checkVisibility() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementBottom = element.getBoundingClientRect().bottom;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 50 && elementBottom > 0) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+            
+            setTimeout(checkVisibility, 100);
+            window.addEventListener('scroll', checkVisibility);
+        });
+    </script>
+</body>
+</html>

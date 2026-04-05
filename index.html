@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>藍 · Сайт-портфолио Михаил Злобин</title>
+    
+    <style>
+        /* ===== ПОДКЛЮЧЕНИЕ СВОИХ ШРИФТОВ ===== */
+        @font-face {
+            font-family: 'Stalinist One';
+            src: url('fonts/StalinistOne-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AA Stetica';
+            src: url('fonts/AA-STETICA-REGULAR.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AA Stetica';
+            src: url('fonts/AA-STETICA-MEDIUM-ITALIC.otf') format('opentype');
+            font-weight: 500;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        /* ===== БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕХ СТРАНИЦ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'AA Stetica', 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background-color: #0a121c;
+            color: #e0f0ff;
+            line-height: 1.6;
+            font-weight: normal;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ===== ФОНОВЫЕ ИЗОБРАЖЕНИЯ ===== */
+        .bg-image-left {
+            position: fixed;
+            left: 10px;
+            top: 100px;
+            width: auto;
+            height: auto;
+            pointer-events: none;
+            z-index: 0;
+            max-width: 500px;
+            max-height: 500px;
+        }
+
+        .bg-image-left img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            object-position: left top;
+            opacity: 0.2;
+        }
+
+        .bg-image-right {
+            position: fixed;
+            right: -400px;
+            bottom: -10px;
+            width: auto;
+            height: auto;
+            pointer-events: none;
+            z-index: 0;
+            max-width: 1200px;
+            max-height: 1200px;
+        }
+
+        .bg-image-right img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            object-position: right bottom;
+            opacity: 0.2;
+        }
+
+        /* Контейнер для контента, чтобы он был поверх фона */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        /* ===== АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Задержки для последовательного появления */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+
+        /* ===== НАВИГАЦИЯ С ТРЕМЯ СОСТОЯНИЯМИ ===== */
+        .nav-wrapper {
+            background: #0e1a2a;
+            border-bottom: 3px solid #2a5a8a;
+            box-shadow: 0 5px 15px rgba(20, 60, 100, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            font-size: 2.2rem;
+            text-decoration: none;
+            color: #b0d0ff;
+            transition: all 0.3s;
+            filter: drop-shadow(0 0 5px #3a7ab0);
+            line-height: 1;
+            display: block;
+            font-family: 'AA Stetica', sans-serif;
+        }
+
+        .logo a:hover {
+            color: #8fcbff;
+            transform: rotate(90deg) scale(1.1);
+            filter: drop-shadow(0 0 15px #5ab0ff);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            font-family: 'AA Stetica', sans-serif;
+            color: #b0d0ff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            background: transparent;
+        }
+
+        .nav-menu a:hover {
+            background-color: #1a324a;
+            color: #ffffff;
+            border-color: #5ab0ff;
+            box-shadow: 0 0 20px #4a9cf0;
+        }
+
+        .nav-menu a:active {
+            background-color: #082567;
+            color: #ffffff;
+            border-color: #4a9cf0;
+            box-shadow: 0 0 20px #00008B;
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.8rem;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* ===== ЗАГОЛОВКИ СО ШРИФТОМ STALINIST ONE ===== */
+        h1, h2, h3, .project-info h3, .skill-name {
+            font-family: 'Stalinist One', 'Impact', 'Arial Black', sans-serif;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #9fc5ff;
+            text-shadow: 2px 2px 0 #1a2a3a;
+        }
+
+        h1, h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        h1::before, h2::before {
+            content: "✧";
+            font-size: 1.8rem;
+            color: #5a9acf;
+            filter: drop-shadow(0 0 5px #3a7ab0);
+            line-height: 1;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 2rem 0 1.5rem 0;
+            border-left: 8px solid #2a5a8a;
+            padding-left: 1.2rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 2rem 0 1.5rem 0;
+            border-left: 5px solid #2a5a8a;
+            padding-left: 1.2rem;
+            color: #9fc5ff;
+        }
+
+        h2.about-title {
+            padding-left: 0;
+            border-left: none;
+            margin-top: 0;
+            color: #9fc5ff;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h2.about-title::before {
+            content: none;
+        }
+
+        /* ===== НОВЫЙ БЛОК ОБО МНЕ (КАК НА СТРАНИЦЕ ПРОЕКТА) ===== */
+        .about-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .about-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .about-text {
+            background: #0e1a2a;
+            border: 1px solid #2a5a8a;
+            border-radius: 30px 4px 30px 4px;
+            padding: 2rem;
+        }
+
+        .about-text p {
+            font-family: 'AA Stetica', sans-serif;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #b0d4ff;
+        }
+
+        .about-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            background-color: #0e1a2a;
+            border: 2px solid #2a5a8a;
+            border-radius: 30px 4px 30px 4px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(20, 40, 70, 0.5);
+            transition: all 0.3s;
+        }
+
+        .about-image:hover {
+            border-color: #5ab0ff;
+            box-shadow: 0 15px 35px #1a3a5a, 0 0 25px #4a9cf0;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.02);
+        }
+
+        /* ===== СТИЛИ ДЛЯ НАВЫКОВ (КВАДРАТНЫЕ ПОЛЯ) ===== */
+        .skills-section {
+            margin: 3rem 0;
+            padding: 1.5rem;
+            background: rgba(20, 60, 100, 0.1);
+            border: 1px solid #2a5a8a;
+            border-radius: 20px 4px 20px 4px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .skill-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 1rem;
+            background: #0e1a2a;
+            border: 1px solid #2a5a8a;
+            border-radius: 15px 2px 15px 2px;
+            transition: all 0.3s;
+            aspect-ratio: 1 / 1;
+            justify-content: center;
+        }
+		
+		.skill-item p{
+            font-family: 'AA Stetica', sans-serif;
+            color: #b0d4ff;
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+            background: #1a324a;
+            border-color: #5ab0ff;
+            box-shadow: 0 5px 20px rgba(40, 100, 160, 0.5), 0 0 15px #4a9cf0;
+        }
+
+        .skill-item img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            font-size: 1.1rem;
+            color: #8fc5ff;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0 #1a2a3a;
+        }
+
+        .skill-desc {
+            font-family: 'AA Stetica', sans-serif;
+            font-size: 0.85rem;
+            color: #b0d4ff;
+            opacity: 1;
+            line-height: 1.5;
+        }
+
+        /* ===== КАРТОЧКИ ПРОЕКТОВ ===== */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .project-card {
+            background: #0e1a2a;
+            border: 1px solid #2a5a8a;
+            border-radius: 4px 20px 4px 20px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(20, 40, 70, 0.4);
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px #1a3a5a, 0 0 20px #4a9cf0;
+            border-color: #5ab0ff;
+        }
+
+        .project-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-color: #0e1a2a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+
+        .project-info {
+            padding: 1.5rem;
+            border-top: 2px dotted #2a5a8a;
+        }
+
+        .project-info h3 {
+            font-size: 1.3rem;
+            color: #8fc5ff;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .project-info p {
+            font-family: 'AA Stetica', sans-serif;
+            color: #b0d4ff;
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        /* ===== СТИЛИ КНОПОК "ПОДРОБНЕЕ" (КАК В НАВИГАЦИИ) ===== */
+        .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1.5rem;
+            background: transparent;
+            border: 2px solid #2a6a9a;
+            color: #b0d4ff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-family: 'AA Stetica', sans-serif;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #1a324a;
+            color: #ffffff;
+            border-color: #5ab0ff;
+            box-shadow: 0 0 20px #4a9cf0;
+        }
+
+        .btn:active {
+            background-color: #082567;
+            color: #ffffff;
+            border-color: #4a9cf0;
+            box-shadow: 0 0 20px #00008B;
+        }
+
+        .jpn-tag {
+            display: inline-block;
+            background: #1a3a5a;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 20px 2px 20px 2px;
+            color: #c0e0ff;
+            margin-right: 0.5rem;
+            font-family: 'AA Stetica', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+
+        .jpn-tag:hover {
+            background: #2a6a9a;
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px #4a9cf0;
+        }
+
+        .jpn-tag:active {
+            background: #0a2a4a;
+            transform: translateY(-1px);
+            box-shadow: 0 0 10px #4a9cf0;
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        footer {
+            background: #0a1220;
+            border-top: 2px solid #2a5a8a;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 4rem;
+            color: #8fb0d0;
+            font-family: 'AA Stetica', sans-serif;
+        }
+
+        hr {
+            border: 1px dashed #2a5a8a;
+            margin: 2rem 0;
+        }
+
+        .author-signature {
+            margin: 3rem 0 0 0;
+            text-align: right;
+            font-size: 1rem;
+            opacity: 0.7;
+            border-top: 1px solid #2a5a8a;
+            padding-top: 1rem;
+            font-style: italic;
+            font-family: 'AA Stetica', sans-serif;
+        }
+
+        .author-signature span {
+            font-family: 'AA Stetica', serif;
+            background: #0e1a2a;
+            padding: 0.3rem 1rem;
+            border-radius: 30px 0 30px 0;
+            transition: all 0.2s;
+        }
+
+        /* ===== ССЫЛКА "ВСЕ ПРОЕКТЫ" ===== */
+        .view-all {
+            text-align: right;
+        }
+
+        .view-all a {
+            color: #7fb0e0;
+            text-decoration: none;
+            font-size: 1.2rem;
+            border-bottom: 1px dashed #7fb0e0;
+            font-family: 'AA Stetica', sans-serif;
+            font-weight: 500;
+            transition: color 0.2s ease, border-color 0.2s ease;
+            display: inline-block;
+        }
+
+        .view-all a:hover {
+            color: #b0e0ff;
+            border-bottom: 1px solid #b0e0ff;
+        }
+
+        .view-all a:active {
+            color: #00008B;
+            border-bottom: 1px solid #00008B;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0e1a2a;
+            color: #7fa0c0;
+            font-size: 0.9rem;
+            font-family: 'AA Stetica', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновое изображение слева -->
+    <div class="bg-image-left">
+        <img src="img/фоновая1.png" alt="Background Left">
+    </div>
+
+    <!-- Фоновое изображение справа -->
+    <div class="bg-image-right">
+        <img src="img/фоновая2.png" alt="Background Right">
+    </div>
+
+    <!-- Обертка для контента поверх фона -->
+    <div class="content-wrapper">
+        <div class="nav-wrapper">
+            <nav>
+                <div class="logo">
+                    <a href="index.html" title="На главную">✧</a>
+                </div>
+                <div class="nav-menu">
+                    <a href="index.html">Главная</a>
+                    <a href="projects.html">Проекты</a>
+                    <a href="contacts.html">Контакты</a>
+                </div>
+            </nav>
+        </div>
+
+        <main class="container">
+            <h1 class="fade-in visible">魂魄 · ОБО МНЕ</h1>
+            
+            <!-- НОВЫЙ БЛОК ОБО МНЕ (как на странице проекта) -->
+            <div class="about-section fade-in delay-1">
+                <!-- Блок с описанием (слева) -->
+                <div class="about-text">
+                    <h2 class="about-title">Михаил Злобин · HIO</h2>
+                    <p><span class="jpn-tag">РУ</span>HIO (Хио) — 3D-художник и дизайнер, специализирующийся на создании атмосферных миров и визуализации. Путь в компьютерной графике начался 5 лет назад с экспериментами в Blender, и с тех я постоянно расширяю свои навыки, осваивая новые инструменты и техники.</p>
+                    <p>Вдохновение черпаю в японской эстетике, киберпанке и современной архитектуре. Люблю смешивать несочетаемое — традиционные формы с неоновыми огнями, органические текстуры с хромированными поверхностями. Для меня важно не просто создать картинку, а рассказать историю, вызвать эмоцию у зрителя.</p>
+                    <p>В портфолио — проекты для indie-игр, арт-коллаборации и личные эксперименты в стилях cyberpunk, low poly, mid poly и sci-fi. Люблю работать с настроением и деталями.</p>
+                </div>
+
+                <!-- Блок с изображением (справа) -->
+                <div class="about-image">
+                    <img src="img/hio.jpg" alt="HIO">
+                </div>
+            </div>
+
+            <!-- БЛОК С НАВЫКАМИ (КВАДРАТНЫЕ ПОЛЯ) -->
+            <h2 class="fade-in delay-2">音読 · мои навыки</h2>	
+            <div class="skills-section fade-in delay-2">
+                <div class="skills-grid">
+                    <div class="skill-item fade-in delay-3">
+                        <img src="img/adobe.png" alt="Adobe">
+                        <h3>Пакет Adobe</h3>
+                        <p>PS, AI, AE, AP</p>
+                    </div>
+                    <div class="skill-item fade-in delay-3">
+                        <img src="img/figma.png" alt="Figma">
+                        <h3>Figma</h3>
+                        <p>веб-разработка, брендирование</p>
+                    </div>
+                    <div class="skill-item fade-in delay-4">
+                        <img src="img/blender.png" alt="Blender">
+                        <h3>Blender 3D</h3>
+                        <p>моделинг, анимация</p>
+                    </div>
+                    <div class="skill-item fade-in delay-4">
+                        <img src="img/ue.png" alt="Unreal">
+                        <h3>Unreal Engine</h3>
+                        <p>визуализация</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="fade-in delay-3">代表作 · лучшие проекты</h2>
+            <div class="grid-3">
+                <div class="project-card fade-in delay-3">
+                    <div class="project-image">
+                        <img src="img/неоновый город.png" alt="Проект 1">
+                    </div>
+                    <div class="project-info">
+                        <h3>Неоновый город</h3>
+                        <p>«Неоновый город» объединяет традиционную японскую архитектуру с эстетикой киберпанка.</p>
+                        <p>2024 год</p>
+                        <a href="project1.html" class="btn">Подробнее</a>
+                    </div>
+                </div>
+                <div class="project-card fade-in delay-4">
+                    <div class="project-image">
+                        <img src="img/визуалка.jpg" alt="Проект 2">
+                    </div>
+                    <div class="project-info">
+                        <h3>Визуализация Verbee</h3>
+                        <p>«Визуализация Verbee» — это концептуальный прототип визуализации для концертов музыканта Verbee.</p>
+                        <p>2024 год</p>
+                        <a href="project2.html" class="btn">Подробнее</a>
+                    </div>
+                </div>
+                <div class="project-card fade-in delay-5">
+                    <div class="project-image">
+                        <img src="img/японский лес.png" alt="Проект 3">
+                    </div>
+                    <div class="project-info">
+                        <h3>Японский лес + Ночь</h3>
+                        <p>«Японский лес» — это атмосферная 3D-локация, вдохновленная традиционными японскими пейзажами.</p>
+                        <p>2025 год</p>
+                        <a href="project3.html" class="btn">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="view-all fade-in delay-5">
+                <a href="projects.html">все проекты →</a>
+            </div>
+
+            <div class="author-signature fade-in delay-5">
+                <span>Модные дизайнеры – диктаторы вкуса. Карл Лагерфельд</span>
+            </div>
+        </main>
+
+        <footer class="fade-in delay-5">
+             2026 · Mikhail Zlobin
+            <div style="margin-top: 0.5rem; font-size: 0.8rem;">workwithhio@mail.ru | @hio_mz</div>
+        </footer>
+    </div>
+
+    <script>
+        // Анимация появления при скролле
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            // Функция проверки видимости элемента
+            function checkVisibility() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementBottom = element.getBoundingClientRect().bottom;
+                    const windowHeight = window.innerHeight;
+                    
+                    // Элемент виден, если он появился в окне (с небольшим запасом)
+                    if (elementTop < windowHeight - 50 && elementBottom > 0) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+            
+            // Проверяем сразу при загрузке
+            setTimeout(checkVisibility, 100);
+            
+            // Проверяем при скролле
+            window.addEventListener('scroll', checkVisibility);
+        });
+    </script>
+</body>
+</html>
